@@ -13,6 +13,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                             
     var window: UIWindow?
     
+    //TODO: 学习实例
     func classAndStrctureStudy() {
         // Class and Structure
         let someResolution = Resolution()
@@ -68,7 +69,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         //TODO: 特别注意：在你的代码中，看起来是每一次赋值的时候都进行拷贝，但是Swift实际上只会在需要的时候进行真正的拷贝，这是因为Swift管理了所有的值拷贝并进行的优化。
     }
-    
     func propertyStudy() {
         
         // 这一步初始化之后，DataManager里面的 importer属性并没有被创建，因为被标记为lazy
@@ -79,13 +79,116 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         // 当第一次使用到importer的时候，importer才会被创建
         println(manager.importer.fileName)
+        
+        // Computed Properties
+        var square = Rect(origin: Point(x: 0.0, y: 0.0), size: Size(width: 10.0, height: 10.0))
+        let initialSquareCenter = square.center
+        println("The initialSquareCenter is (\(initialSquareCenter.x), \(initialSquareCenter.y))")
+        
+        square.center = Point(x: 15.0, y: 15.0)
+        println("square.origin is now at (\(square.origin.x), \(square.origin.y))")
+        
+        // Read-only computed 
+        let fourByFiveByTwo = Cuboid(width: 4.0, height: 5.0, depth: 2.0)
+        println("fourByFiveByTwo's volume is \(fourByFiveByTwo.volume)")
+        
+        // Property Observer
+        let stepCounter = StepCounter()
+        stepCounter.totalSteps = 200
+        stepCounter.totalSteps = 360
+        stepCounter.totalSteps = 896
+        
+        // Type Properties
+        println(SomeClass.computedTypeProperty)
+        println(SomeStructure.storedTypeProperty)
+        
+        SomeStructure.storedTypeProperty = "Another value"
+        println(SomeStructure.storedTypeProperty)
+    }
+    func inheritanceStudy() {
+        
+        let someVehicle = Vehicle()
+        println("Vehicle: \(someVehicle.description)")
+        
+        let bicycle = Bicycle()
+        bicycle.hasBasket = true
+        bicycle.currentSpeed = 15.0
+        println("Bicycle: \(bicycle.description)")
+        
+        let tandem = Tandem()
+        tandem.hasBasket = true
+        tandem.currentNumberOfPassengers = 2
+        tandem.currentSpeed = 22.0
+        println("Tandem: \(tandem.description)")
+        
+        let train = Train();
+        train.makeNosie();
+        
+        /*let car = Car();
+        car.currentSpeed = 25.0
+        car.gear = 3
+        println("Car: \(car.description)")
+        
+        let automatic = AutomaticCar()
+        automatic.currentSpeed = 35.0
+        println("AutomaticCar: \(automatic.description)")*/
+        
+        
+    }
+    
+    func initializerStudy() {
+        
+        var f = Fahrenheit();
+        println("The default temperature is \(f.temperature) Fahrenheit")
+        
+        let boilingPointOfWater = Celsius(fromFahrenheit: 212.0)
+        let freezingPointOfWater = Celsius(fromKelvin: 273.15)
+        
+        let magenta = Color(red: 1.0, green: 0.0, blue: 1.0)
+        let halfGray = Color(white: 0.5)
+        //let veryGreen = Color(0.0, 1.0, 0.0) // compile-error require external parameter names
+        let bodyTemperature = Celsius(37.0)
+        
+        let cheeseQuestion = SurveyQuestion(text: "Do you like cheese?")
+        cheeseQuestion.ask()
+        cheeseQuestion.response = "Yes, I do like cheese"
+        
+        // 类的继承和初始化
+        let vehicle2 = Vehicle2()
+        println("Vehicle2: \(vehicle2.description)")
+        let bicycle2 = Bicycle2()
+        println("Bicycle2: \(bicycle2.description)")
+        let namedMeat = Food(name: "Bacon")
+        println("namedMeat's name is \(namedMeat.name)")
+        let mysteryMeat = Food()
+        println("mysteryMeat's name is \(mysteryMeat.name)")
+        let oneMysteryItem = RecipeIngredient()
+        let oneBacon = RecipeIngredient(name: "Bacon")
+        let sixEggs = RecipeIngredient(name: "Eggs", quantity: 6)
+        
+        var breakfastList = [ShoppingListItem(), ShoppingListItem(name: "Bacon"), ShoppingListItem(name: "Eggs", quantity: 6)]
+        breakfastList[0].name = "Orange juice"
+        breakfastList[0].purchased = true
+        
+        for item in breakfastList {
+            println(item.description)
+        }
+        
+        // 使用闭包给属性设置默认值
+        let board = Checkerboard()
+        println(board.squareIsBlackAtRow(0, column: 1))
+        println(board.squareIsBlackAtRow(9, column: 9))
+        
     }
     
     func application(application: UIApplication!, didFinishLaunchingWithOptions launchOptions: NSDictionary!) -> Bool {
         
-        //classAndStrctureStudy();
+        //classAndStrctureStudy()
+        //propertyStudy()
+        //inheritanceStudy()
         
-        propertyStudy();
+        initializerStudy()
+        
         
         return true
     }
