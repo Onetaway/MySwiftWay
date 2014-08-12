@@ -135,7 +135,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         
     }
-    
     func initializerStudy() {
         
         var f = Fahrenheit();
@@ -180,15 +179,175 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         println(board.squareIsBlackAtRow(9, column: 9))
         
     }
+    func deinitializationStudy() {
+        var playerOne: Player? = Player(coins: 100)
+        println("A new player has joined the game with \(playerOne!.coinsInPurse) coins")
+        println("There are now \(Bank.coinsInBank) coins left in the bank")
+        playerOne!.winCoins(2000)
+        println("PlayerOne won 2000 coins and now has \(playerOne!.coinsInPurse) coins")
+        println("The bank now only has \(Bank.coinsInBank) coins left")
+        
+        playerOne = nil
+        println("PlayerOne has left the game")
+        println("The bank now has \(Bank.coinsInBank) coins")
+    
+    }
+    func arcStudy() {
+        
+        var reference1: Person?
+        var reference2: Person?
+        var reference3: Person?
+        
+        // Strong reference from reference1 to the Person instance. reference -> Person instance
+        reference1 = Person(name: "John Appleseed")
+        reference2 = reference1
+        reference3 = reference1
+        // 现在有3个strong reference 指向"John Appleseed"
+        
+        reference1 = nil
+        reference2 = nil
+        reference3 = nil
+        // 当3个强引用全部为nil时，arc才会释放"John Appleseed"实例
+        
+        // 强循环引用实例
+        var john: Person?
+        var number73: Apartment?
+        
+        john = Person(name: "John")
+        number73 = Apartment(number: 73)
+        
+        // 产生强引用循环，注意发生引用循环的位置，是john里面的apartment成员变量
+        // 和number73里面的tenant成员变量
+        john!.apartment = number73
+        number73!.tenant = john
+        
+        john = nil
+        number73 = nil
+        
+        // unowned示例
+        var mike: Customer?
+        mike = Customer(name: "Mike")
+        mike!.card = CreditCard(number: 121212121212, customer: mike!)
+        mike = nil
+        
+        // 情形3
+        var country = Country(name: "Canada", capitalName: "Ottawa")
+        println("\(country.name)'s capital city is called \(country.capitalCity.name)")
+    }
+    func closureStudy() {
+        let names = ["Chris", "Alex", "Ewa", "Barry", "Daniella"]
+        
+        // 使用类似函数指针写法
+        func backwards(s1: String, s2: String) -> Bool {
+            return s1 > s2
+        }
+        var reversed = sorted(names, backwards)
+        println("函数指针写法: \(reversed)")
+        
+        // 闭包写法
+        reversed = sorted(names, { (s1: String, s2: String) -> Bool in
+            s1 < s2
+        })
+        println("完整闭包写法: \(reversed)")
+        
+        // 从上下文进行类型推断写法，函数返回值也可以推断，单行指令 return 关键字也可以省略
+        reversed = sorted(names, { (s1, s2) in s1 > s2 })
+        println("类型推断写法: \(reversed)")
+        
+        // 默认参数写法
+        reversed = sorted(names, { $0 > $1 })
+        println("$0 $1写法: \(reversed)")
+        
+        // 运算符函数写法
+        reversed = sorted(names, <)
+        println("运算符函数写法: \(reversed)")
+        
+        // 尾闭包，函数调用的最后一个参数是闭包的时候，可以把这个闭包写在函数圆括号的后面(外面)，而不用写在圆括号里面
+        reversed = sorted(names) {$0 > $1}
+        println("尾闭包写法: \(reversed)")
+        
+        let digitNames = [0: "Zero", 1: "One", 2: "Two", 3: "Three",
+            4: "Four", 5: "Five", 6: "Six", 7: "Seven", 8: "Eight", 9: "Nine"]
+        let numbers = [16, 58, 510]
+        let string = numbers.map {
+            (var number) -> String in
+            var output = ""
+            
+            while number > 0 {
+                output = digitNames[number % 10]! + output
+                number /= 10
+            }
+            
+            return output
+        }
+        println(string)
+        
+        // Capture Values。下面这个函数返回的是一个函数
+        func makeIncrementor(forIncrement amount: Int) -> () -> Int {
+            
+            var runningTotal = 0
+            
+            func incrementor() -> Int {
+                runningTotal += amount
+                return runningTotal
+            }
+            
+            return incrementor
+        }
+        let incrementByTen = makeIncrementor(forIncrement: 10)
+        
+        // 闭包没有修改值的时候，它会得到一份该值的拷贝
+        // 闭包修改了某个值的时候，它持有对该值的引用
+        println("\(incrementByTen())")
+        println("\(incrementByTen())")
+        println("\(incrementByTen())")
+        
+        // functions 和 closure 是引用类型
+        
+        
+        
+    }
+    func enumStudy() {
+        // Swift 的枚举可以指定任意类型，与 C 和 ObjC不同，这些枚举成员变量不被赋予默认的
+        // 0, 1, 2, 3，而是全新的类型
+        enum CompassPoint {
+            case North
+            case South
+            case East
+            case West
+        }
+        
+        enum Planet {
+            case Mercury, Venus, Earth, Mars, Jupiter, Saturn, Uranus, Neptune
+        }
+        
+        var directionToHead = CompassPoint.West
+        directionToHead = .East
+        directionToHead = .South
+        
+        switch directionToHead {
+        case .North:
+            println("North")
+        case .South:
+            println("South")
+        case .West:
+            println("West")
+        case .East:
+            println("East")
+        }
+    }
     
     func application(application: UIApplication!, didFinishLaunchingWithOptions launchOptions: NSDictionary!) -> Bool {
         
         //classAndStrctureStudy()
         //propertyStudy()
         //inheritanceStudy()
+        //initializerStudy()
+        //deinitializationStudy()
+        //arcStudy()
+        //closureStudy()
         
-        initializerStudy()
-        
+        enumStudy()
         
         return true
     }
