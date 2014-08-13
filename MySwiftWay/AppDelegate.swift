@@ -14,6 +14,329 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     var window: UIWindow?
     
     //TODO: 学习实例
+    
+    func basicStudy() {
+        // Tuples
+        let http404Error = (404, "Not Found")
+        println(http404Error)
+        let (statusCode, statusMessage) = http404Error
+        println("The status code is \(statusCode)")
+        println("The status message is \(statusMessage)")
+    
+        let (justTheStatusCode, _) = http404Error
+        println("The status code is \(justTheStatusCode)")
+        
+        // access value
+        println("The status code is \(http404Error.0)")
+        println("The status meaage is \(http404Error.1)")
+        
+        // 命名元组
+        let http200Status = (statusCode: 200, description: "OK")
+        println("The status code is \(http200Status.statusCode)")
+        println("The status message is \(http200Status.description)")
+    
+        // Optionals
+        let possibleNumber = "123"
+        let convertedNumber = possibleNumber.toInt()
+        
+        // nil. nil不能用在 non-optional 的常量或者变量上
+        var serverResponseCode: Int? = 404
+        serverResponseCode = nil
+        
+        // optional 变量没有赋值的时候，自动默认地被设置为 nil
+        // Swift 的 nil 和 ObjC 的 nil 不一样。Swift 的 nil 不是一个指针，它只是表示一个类型缺少一个值
+        // Optional 的任何类型都可以被设置为 nil，而不再仅仅是对象类型
+        var surveyAnswer: String?
+        
+        // 强制解包
+        if convertedNumber != nil {
+            println("convertedNumber contains some integer value \(convertedNumber!)")
+        }
+        
+        // Optional Binding
+        if let actualNumber = possibleNumber.toInt() {
+            println("\(possibleNumber) has an integer value of \(actualNumber)")
+        } else {
+            println("\(possibleNumber) could not be converted to an integer")
+        }
+        
+        // 隐式解包
+        let possibleString: String? = "An optional string"
+        println(possibleString!)
+        let assumedString: String! = "An implicitly unwrapped optional string"
+        println(assumedString)
+        
+        if assumedString != nil {
+            println(assumedString)
+        }
+        
+        if let definiteString = assumedString {
+            println(definiteString)
+        }
+        
+        // 断言
+        let age = -3
+        //assert(age >= 0, "A person's age cannot be less than zero")
+        
+    }
+    
+    func basicOperatorStudy() {
+        
+        // Nil Coalescing Operator (a ?? b)
+        // 解释: a 必须是一个 optional type，b 必须是和 a 里面保存的值类型相同的一个值
+        // ?? 运算符所用: 如果 a 有值，那么就 unwrapping a；如果 a 为 nil，就返回 b
+        // a ?? b 等价于 a != nil ? a! : b。短路原则同样适用
+        let defaultColorName = "red"
+        var userDefinedColor: String?
+        var colorNameToUse = userDefinedColor ?? defaultColorName
+        println(colorNameToUse)
+        userDefinedColor = "green"
+        colorNameToUse = userDefinedColor ?? defaultColorName
+        println(colorNameToUse)
+        
+        // Range Operator ...   ..<
+        for index in 1...5 {
+            println("\(index) times 5 is \(index * 5)")
+        }
+        
+        let names = ["Anna", "Ales", "Brian", "Jack"]
+        let count = names.count
+        for i in 0 ..< count {
+            println("Person \(i + 1) is called \(names[i])")
+        }
+    }
+    
+    // 完成
+    func collectionTypeStudy() {
+        // Array
+        var shoppingList = ["Eggs", "Milk"]
+        println("The shopping list contains \(shoppingList.count) items")
+        
+        // Accessing and modify array
+        if shoppingList.isEmpty {
+            println("The shopping list is empty")
+        } else {
+            println("The shopping list is not empty")
+        }
+        
+        shoppingList.append("Flour")
+        shoppingList += ["Baking Powder"]
+        shoppingList += ["Chocolate Spread", "Cheese", "Butter"]
+        println("The shopping list now contains \(shoppingList.count) items")
+        
+        var firstItem = shoppingList[0]
+        println(firstItem)
+        
+        shoppingList[0] = "Six eggs"
+        println(shoppingList)
+        
+        shoppingList[4...6] = ["Bananas", "Apples"]
+        println(shoppingList)
+        
+        shoppingList.insert("Maple Syrup", atIndex: 0)
+        println(shoppingList)
+        
+        let mapLeSyrup = shoppingList.removeAtIndex(0)
+        println(shoppingList)
+        
+        firstItem = shoppingList[0]
+        println(firstItem)
+        
+        let apples = shoppingList.removeLast()
+        println(shoppingList)
+        
+        // Iterating Over an Array
+        for item in shoppingList {
+            println(item)
+        }
+        
+        for (index, value) in enumerate(shoppingList) {
+            println("Item: \(index + 1): \(value)")
+        }
+        
+        // Creating and Initializing an Array
+        var someInts = [Int]()
+        println("someInts is of type [Int] with \(someInts.count) items.")
+        someInts.append(3)
+        println(someInts)
+        someInts = []
+        println(someInts)
+        
+        var threeDoubles = [Double](count: 3, repeatedValue: 0.0)
+        println(threeDoubles)
+        var anotherThreeDoubles = [Double](count:3, repeatedValue: 2.5)
+        println(anotherThreeDoubles)
+        
+        var sixDoubles = threeDoubles + anotherThreeDoubles
+        println(sixDoubles)
+        
+        // Dictionary
+        var airports = ["TYO": "Tokyo", "DUB": "Dublin"]
+        
+        // Accessing and modify a dictionary
+        println("The airports dictionary contains \(airports.count) items")
+        if airports.isEmpty {
+            println("The airport dictionary is empty")
+        } else {
+            println("The airport dictionary is not empty")
+        }
+        
+        airports["LHR"] = "London" // 加在了第0个位置
+        println(airports)
+        
+        airports["LHR"] = "Lodon Heathrow"
+        println(airports)
+        
+        if let oldValue = airports.updateValue("Dublin International", forKey: "DUB") {
+            println("The old value for DUB is \(oldValue)")
+        }
+        println(airports)
+        
+        if let airportName = airports["DUB"] {
+            println("The airportName is \(airportName)")
+        } else {
+            println("The airport is not in the airports dictionary")
+        }
+        
+        airports["APL"] = "Apple International"
+        println(airports)
+        
+        airports["APL"] = nil
+        println(airports)
+        
+        if let removedValue = airports.removeValueForKey("DUB") {
+            println("removedValue is \(removedValue)")
+        } else {
+            println("The aiport is not in the airport dictionary")
+        }
+        
+        // 遍历一个字典，对字典遍历的时候，每一个 item 都被看成是一个 Tuple
+        for (airportCode, airportName) in airports {
+            println("\(airportCode): \(airportName)")
+        }
+        // 只遍历 key
+        for airportCode in airports.keys {
+            println("Airport code: \(airportCode)")
+        }
+        // 只遍历 values
+        for airportName in airports.values {
+            println("Airport name: \(airportName)")
+        }
+        // 只使用 key 创建数组
+        let airportCodes = [String](airports.keys)
+        println(airportCodes)
+        // 只使用 value 创建数组
+        let airportNames = [String](airports.values)
+        println(airportNames)
+        
+        // 创建一个空的字典
+        var namesOfIntegers = [Int: String]()
+        println(namesOfIntegers)
+        namesOfIntegers[16] = "sixteen"
+        println(namesOfIntegers)
+        namesOfIntegers = [:] // 清空字典
+        println(namesOfIntegers)
+    
+    }
+    
+    // 完成
+    func subscriptStudy() {
+        let threeTimesTable = TimesTable(multiplier: 3)
+        println("Six times three is \(threeTimesTable[6])")
+        
+        // 下标用法
+        var numberOfLegs = ["spider": 8, "ant": 6, "cat": 4]
+        numberOfLegs["bird"] = 2
+        println(numberOfLegs)
+        
+        // Subscript Options
+        var matrix = Matrix(rows: 2, columns: 2)
+        matrix[0, 1] = 1.5
+        matrix[1, 0] = 3.2
+        
+        let someValue = matrix[2, 2]
+    }
+    
+    func enumStudy() {
+        // Swift 的枚举可以指定任意类型，与 C 和 ObjC不同，这些枚举成员变量不被赋予默认的
+        // 0, 1, 2, 3，而是全新的类型
+        enum CompassPoint {
+            case North
+            case South
+            case East
+            case West
+        }
+        
+        enum Planet {
+            case Mercury, Venus, Earth, Mars, Jupiter, Saturn, Uranus, Neptune
+        }
+        
+        var directionToHead = CompassPoint.West
+        directionToHead = .East
+        directionToHead = .South
+        
+        switch directionToHead {
+        case .North:
+            println("North")
+        case .South:
+            println("South")
+        case .West:
+            println("West")
+        case .East:
+            println("East")
+        }
+        
+        let somePlanet = Planet.Mars
+        switch somePlanet {
+        case .Earth:
+            println("Mostly harmless")
+        default:
+            println("Not a safe place for humans")
+        }
+        
+        // Associated Values
+        enum Barcode {
+            case UPCA(Int, Int, Int, Int)
+            case QRCode(String)
+        }
+        var productBarcode = Barcode.UPCA(8, 85998, 51226, 8)
+        productBarcode = .QRCode("SDFJFHGJGKFGFH")
+        switch productBarcode {
+        case .UPCA(let numberSystem, let manufacturer, let product, let check):
+            println("UPC-A: \(numberSystem), \(manufacturer), \(product), \(check).")
+        case .QRCode(let productCode):
+            println("QR code: \(productCode)")
+        }
+        // 如果所有的关联值都是 let 或者 var ，则可以在 case 后面写 let 或 var作为简写方式
+        switch productBarcode {
+        case let .UPCA(numberSystem, manufacturer, product, check):
+            println("UPC-A: \(numberSystem), \(manufacturer), \(product), \(check).")
+        case let .QRCode(productCode):
+            println("QR code: \(productCode)")
+        }
+        
+        // Raw Values
+        enum Planet2: Int {
+            case Mercury = 1, Venus, Earth, Mars, Jupiter, Saturn, Uranus, Neptune
+        }
+        let earthsOrder = Planet2.Earth.toRaw()
+        println("earthsOrder's raw value is \(earthsOrder)")
+        let possiblePlanet = Planet2.fromRaw(7) // 返回的是一个 optional type
+        println("possiblePlanet from raw is \(possiblePlanet)")
+        
+        let positionToFind = 9
+        if let somePlanet = Planet2.fromRaw(positionToFind) {
+            switch somePlanet {
+            case .Earth:
+                println("Mostly harmless")
+            default:
+                println("Not a safe place for humans")
+            }
+        } else {
+            println("There isn't a planet at the position \(positionToFind)")
+        }
+        
+    }
     func classAndStrctureStudy() {
         // Class and Structure
         let someResolution = Resolution()
@@ -307,38 +630,106 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         
     }
-    func enumStudy() {
-        // Swift 的枚举可以指定任意类型，与 C 和 ObjC不同，这些枚举成员变量不被赋予默认的
-        // 0, 1, 2, 3，而是全新的类型
-        enum CompassPoint {
-            case North
-            case South
-            case East
-            case West
+    
+    // 完成
+    func optionalChainingStudy() {
+        
+        // Optional Chaining as an Alternative to Forced Unwrapping
+        let john = PersonOptionalChaining()
+        //john.residence = ResidenceOptionalChaining()
+        //let roomCount = john.residence!.numberOfRooms  // runtime error
+        if let roomCount = john.residence?.numberOfRooms {
+            println("John's residence has \(roomCount) rooms")
+        } else {
+            println("Unable to retrieve the number of rooms")
         }
         
-        enum Planet {
-            case Mercury, Venus, Earth, Mars, Jupiter, Saturn, Uranus, Neptune
+        // Accessing Properties Through Optional Chaining
+        let someAddress = Address()
+        someAddress.buildingNumber = "29"
+        someAddress.buildingName = "Acacia Road"
+        john.residence?.address = someAddress
+        
+        // Calling Methods Through Optional Chaining
+        // 下面 printNumberOfRooms() 这个函数返回的不再是 Void，而是 Void?
+        // 因为在 optional chaining 中的返回值总是 optional type 的
+        if john.residence?.printNumberOfRooms() != nil {
+            println("It was possible to print the number of rooms")
+        } else {
+            println("It was not possible to print the number of rooms")
         }
         
-        var directionToHead = CompassPoint.West
-        directionToHead = .East
-        directionToHead = .South
-        
-        switch directionToHead {
-        case .North:
-            println("North")
-        case .South:
-            println("South")
-        case .West:
-            println("West")
-        case .East:
-            println("East")
+        if (john.residence?.address = someAddress) != nil {
+            println("It was possible to set the address")
+        } else {
+            println("It was not possible to set the address")
         }
+        
+        // Access Subscript Through Optional Chaining
+        if let firstRoomName = john.residence?[0].name {
+            println("The first room is \(firstRoomName)")
+        } else {
+            println("Unable to retrieve the first room name")
+        }
+        john.residence?[0] = Room(name: "Bathroom") // 失败，因为 residence 现在还是 nil
+        let johnHouse = ResidenceOptionalChaining()
+        johnHouse.rooms.append(Room(name: "Living Room"))
+        johnHouse.rooms.append(Room(name: "Kitchen"))
+        john.residence = johnHouse
+        
+        if let firstNameRoom = john.residence?[0].name {
+            println("First room name is \(firstNameRoom)")
+        } else {
+            println("Unable to retrieve the first room name")
+        }
+        
+        // 字典中的 key 返回的是 optional type
+        var testScores = ["Dave": [86, 67, 89], "Tim": [79, 94, 78]]
+        testScores["Dave"]?[0] = 91
+        testScores["Tim"]?[0]++
+        testScores["Brian"]?[0] = 72
+        println(testScores)
+        
+        // 连接多级 Optional Chain
+        if let johnsStreet = john.residence?.address?.street {
+            println("John's street name is \(johnsStreet)")
+        } else {
+            println("Unable to retrieve the address.")
+        }
+        
+        let johnsAddress = Address()
+        johnsAddress.buildingName = "The Larches"
+        johnsAddress.street = "Laurel Street"
+        john.residence!.address = johnsAddress
+        
+        if let johnsStreet = john.residence?.address?.street {
+            println("John's street name is \(johnsStreet)")
+        } else {
+            println("Unable to retrieve the address.")
+        }
+        
+        // Chaining on Methods With Optional Return Values
+        if let buildingIdentifier = john.residence?.address?.buildingIdentifier() {
+            println("John's building identifier is \(buildingIdentifier)")
+        }
+        
+        if let beginsWithThe = john.residence?.address?.buildingIdentifier()?.hasPrefix("The") {
+            if beginsWithThe {
+                println("John's building identifier begins with \"The\" ")
+            } else {
+                println("John's building identifier does not begins with \"The\" ")
+            }
+        }
+    }
+    
+    func typeCastingStudy() {
+        
     }
     
     func application(application: UIApplication!, didFinishLaunchingWithOptions launchOptions: NSDictionary!) -> Bool {
         
+        //basicStudy()
+        //basicOperatorStudy()
         //classAndStrctureStudy()
         //propertyStudy()
         //inheritanceStudy()
@@ -346,32 +737,53 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         //deinitializationStudy()
         //arcStudy()
         //closureStudy()
+        //enumStudy()
+        //subscriptStudy()
+        //collectionTypeStudy()
+        //optionalChainingStudy()
         
-        enumStudy()
-        
+        typeCastingStudy()
         return true
     }
 
-    func applicationWillResignActive(application: UIApplication!) {
-        
-    }
-
-    func applicationDidEnterBackground(application: UIApplication!) {
-      
-    }
-
-    func applicationWillEnterForeground(application: UIApplication!) {
-        
-    }
-
-    func applicationDidBecomeActive(application: UIApplication!) {
-        
-    }
-
-    func applicationWillTerminate(application: UIApplication!) {
-        
-    }
 
 
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
