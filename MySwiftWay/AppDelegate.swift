@@ -850,6 +850,16 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     
     }
     
+    func protocolStudy() {
+        let john = PersonProtocol(fullName: "John Gates")
+        println(john.fullName)
+        var ncc1701 = StarShip(name: "Enterprise", prefix: "USS")
+        println(ncc1701.fullName)
+        
+        // Method Requirements
+        let generator = LinearCongruentialGenerator()
+    }
+    
     func application(application: UIApplication!, didFinishLaunchingWithOptions launchOptions: NSDictionary!) -> Bool {
         
         //basicStudy()
@@ -866,8 +876,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         //collectionTypeStudy()
         //optionalChainingStudy()
         //typeCastingStudy()
+        //extensionStudy()
         
-        extensionStudy()
+        protocolStudy()
         
         return true
     }
