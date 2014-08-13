@@ -722,8 +722,132 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         }
     }
     
+    // 完成
     func typeCastingStudy() {
+        let library = [Movie(name: "Casablanca", director: "Michael Curtiz"),
+                       Song(name: "Blue Suede Shoes", artist: "Elvis Presley"),
+                       Movie(name: "Citizen Kane", director: "Orson Welles"),
+                       Song(name: "The One And Only", artist: "Chesney Hawkes"),
+                       Song(name: "Never Gonna Give You Up", artist: "Rick Astley")]
         
+        // Checking Type. 使用 is 关键字
+        var movieCount = 0
+        var songCount = 0
+        for item in library {
+            if item is Song {
+                ++songCount
+            } else if item is Movie {
+                ++movieCount
+            }
+        }
+        println("Media Library contains \(songCount) songs and \(movieCount) movies")
+        
+        // Downcasting 类型转换操作符 as
+        for item in library {
+            if let movie = item as? Movie {
+                println("Movie: '\(movie.name)', dir.\(movie.director)")
+            } else if let song = item as? Song {
+                println("Song: '\(song.name)', by \(song.artist)")
+            }
+        }
+        
+        // AnyObject 可以表示任何一个类的实例
+        // Any 可以表示除了函数之外的任何类型的实例(不仅仅只是类的实例)
+        let someObjects: [AnyObject] = [Movie(name: "2001: A Space Odyssey", director: "Stanley Kubrick"),
+                                        Movie(name: "Moon", director: "Duncan Jones"),
+                                        Movie(name: "Alien", director: "Ridley Scott")]
+        
+        for object in someObjects {
+            let movie = object as Movie
+            println("Movie: '\(movie.name)', dir. \(movie.director)")
+        }
+        
+        // even shorter 写法
+        for movies in someObjects as [Movie] {
+            println("更短的写法 Movie: '\(movies.name)', dir. \(movies.director)")
+        }
+        
+        // Any 用法
+        var things = [Any]()
+        things.append(0)
+        things.append(0.0)
+        things.append(42)
+        things.append(3.1415926)
+        things.append("Hello")
+        things.append((3.5, 6.3))
+        things.append(Movie(name: "Ghostbusters", director: "Ivan Reitman"))
+        
+        for thing in things {
+            switch thing {
+            case 0 as Int:
+                println("zero as an Int")
+            case 0 as Double:
+                println("zero as a Double")
+            case let someInt as Int:
+                println("an integer value of \(someInt)")
+            case let someDouble as Double where someDouble > 0:
+                println("a positive double value of \(someDouble)")
+            case is Double:
+                println("some other double value that I don't want to print")
+            case let someString as String:
+                println("a string value of \"\(someString)\"")
+            case let (x, y) as (Double, Double):
+                println("an (x, y) point at \(x), \(y)")
+            case let movie as Movie:
+                println("a movie called '\(movie.name)', dir.\(movie.director)")
+            default:
+                println("something else")
+            }
+        
+        }
+        
+    }
+    
+    func extensionStudy() {
+        
+        // extension 没有名字。Swift 中的 extension 可以:
+        // 1. 添加 computed properties 和 computed static properties
+        // 2. 定义实例方法和类方法
+        // 3. 提供新的构造函数
+        // 4. 定义下标
+        // 5. 定义和使用新的 nested types
+        // 6. 让已经存在的类型遵守某个协议
+        // 7. extension 可以给类添加新的函数，但是不能覆盖已经存在的函数
+        
+        // 添加 computed properties
+        let oneInch = 25.4.mm
+        println("One inch is \(oneInch) meters")
+        let threeFeet = 3.ft
+        println("Three feet is \(threeFeet) meters")
+        
+        // 添加构造函数
+        let defaultRect = RectExtension()
+        let memberwiseRect = RectExtension(origin: PointExtension(x: 2.0, y: 2.0), size: SizeExtension(width: 5.0, height: 5.0))
+        let centerRect = RectExtension(center: PointExtension(x: 4.0, y: 4.0), size: SizeExtension(width: 3.0, height: 3.0))
+    
+        // 添加方法
+        3.repetitions({
+            println("Hello World")
+        })
+        3.repetitions() {
+            println("GoodBye")
+        }
+        var someInt = 4
+        someInt.square()
+        println(someInt)
+        
+        // 添加下标
+        746381295[0] // returns 5
+        746381295[1] // returns 9
+        746381295[2] // returns 2
+        746381295[8] // returns 7
+        
+        // 添加 Nested Types
+        
+        
+        
+    
+    
     }
     
     func application(application: UIApplication!, didFinishLaunchingWithOptions launchOptions: NSDictionary!) -> Bool {
@@ -741,8 +865,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         //subscriptStudy()
         //collectionTypeStudy()
         //optionalChainingStudy()
+        //typeCastingStudy()
         
-        typeCastingStudy()
+        extensionStudy()
+        
         return true
     }
 
