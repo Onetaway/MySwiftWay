@@ -874,6 +874,16 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         println("someString is now \(someString)")
         println("anotherString is now \(anotherString)")
     }
+    func protocolStudy() {
+        let john = PersonProtocol(fullName: "John Gates")
+        println(john.fullName)
+        var ncc1701 = StarShip(name: "Enterprise", prefix: "USS")
+        println(ncc1701.fullName)
+        
+        // Method Requirements
+        let generator = LinearCongruentialGenerator()
+
+    }
     
     func application(application: UIApplication!, didFinishLaunchingWithOptions launchOptions: NSDictionary!) -> Bool {
         
@@ -893,8 +903,13 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         //typeCastingStudy()
         //extensionStudy()
         
+
         //accessControlStudy()
-        genericStudy()
+        //genericStudy()
+
+        //protocolStudy()
+        
+
         return true
     }
 
