@@ -573,12 +573,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         })
         println("完整闭包写法: \(reversed)")
         
-        // 从上下文进行类型推断写法，函数返回值也可以推断，单行指令 return 关键字也可以省略
-        reversed = sorted(names, { (s1, s2) in s1 > s2 })
+        // 从上下文进行类型推断写法，函数返回值也可以推断
+        reversed = sorted(names, { s1, s2 in return s1 > s2 })
         println("类型推断写法: \(reversed)")
         
         // 默认参数写法
-        reversed = sorted(names, { $0 > $1 })
+        reversed = sorted(names, { return $0 > $1 })
         println("$0 $1写法: \(reversed)")
         
         // 运算符函数写法
@@ -586,7 +586,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         println("运算符函数写法: \(reversed)")
         
         // 尾闭包，函数调用的最后一个参数是闭包的时候，可以把这个闭包写在函数圆括号的后面(外面)，而不用写在圆括号里面
-        reversed = sorted(names) {$0 > $1}
+        reversed = sorted(names) { return $0 > $1}
         println("尾闭包写法: \(reversed)")
         
         let digitNames = [0: "Zero", 1: "One", 2: "Two", 3: "Three",
@@ -723,7 +723,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
     
     // 完成
-    func typeCastingStudy() {
+    /*func typeCastingStudy() {
         let library = [Movie(name: "Casablanca", director: "Michael Curtiz"),
                        Song(name: "Blue Suede Shoes", artist: "Elvis Presley"),
                        Movie(name: "Citizen Kane", director: "Orson Welles"),
@@ -801,7 +801,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         }
         
-    }
+    }*/
     
     func extensionStudy() {
         
@@ -850,6 +850,31 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     
     }
     
+    
+    func accessControlStudy() {
+        
+    }
+    
+    func genericStudy() {
+        func swapTwoValues<T>(inout a: T, inout b: T) {
+            let temporaryA = a
+            a = b
+            b = temporaryA
+        }
+        
+        var someInt = 3
+        var anotherInt = 107
+        swapTwoValues(&someInt, &anotherInt)
+        println("someInt is now \(someInt)")
+        println("anotherInt is now \(anotherInt)")
+        
+        var someString = "hello"
+        var anotherString = "world"
+        swapTwoValues(&someString, &anotherString)
+        println("someString is now \(someString)")
+        println("anotherString is now \(anotherString)")
+    }
+    
     func application(application: UIApplication!, didFinishLaunchingWithOptions launchOptions: NSDictionary!) -> Bool {
         
         //basicStudy()
@@ -866,9 +891,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         //collectionTypeStudy()
         //optionalChainingStudy()
         //typeCastingStudy()
+        //extensionStudy()
         
-        extensionStudy()
-        
+        //accessControlStudy()
+        genericStudy()
         return true
     }
 
